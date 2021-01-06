@@ -21,3 +21,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Publish
       run: dotnet publish --no-restore
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v2
+      with: 
+        name: BuildArtifact
+        path: D:\a\CIDemo\CIDemo\bin\Debug\net5.0\publish\
