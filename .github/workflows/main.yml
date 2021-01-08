@@ -9,12 +9,17 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -25,4 +30,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with: 
         name: BuildArtifact
-        path:  D:\a\CIDemo\CIDemo\bin\production\net5.0\publish\
+        path:  /home/runner/work/CIDemo/CIDemo/bin/production/net5.0/publish/
