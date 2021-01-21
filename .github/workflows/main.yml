@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       IIS_SERVER_COMPUTER_NAME: ${{ secrets.IIS_SERVER_COMPUTER_NAME }}
       IIS_WEBSITE_NAME: ${{ secrets.IIS_WEBSITE_NAME }}
@@ -25,8 +25,8 @@ jobs:
     - name: Cache dependencies
       uses: actions/cache@v2
       with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        path: ~\.nuget\packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**\packages.lock.json') }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -37,10 +37,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with: 
         name: BuildArtifact
-        path:  /home/runner/work/CIDemo/CIDemo/bin/Debug/net5.0/publish/
+        path: D:\a\CIDemo\CIDemo\bin\Debug\net5.0\publish\
 
 
     - name: Deploy Application
-      shell: sh
-      run: '"C:/Program Files (x86)/IIS/Microsoft Web Deploy V3/msdeploy.exe" -verb:sync -source:contentPath="/home/runner/work/CIDemo/CIDemo/bin/Debug/net5.0/publish/" -dest:contentPath="C:/inetpub/CIDemoUsingGithubActions/",computerName="${{ env.IIS_SERVER_COMPUTER_NAME }}/msdeploy.axd?site=${{ env.IIS_WEBSITE_NAME }}",username="${{ env.IIS_SERVER_USERNAME }}",password="${{ env.IIS_SERVER_PASSWORD }}",authtype="Basic"'
+      shell: cmd
+      run: '"C:/Program Files (x86)/IIS/Microsoft Web Deploy V3/msdeploy.exe" -verb:sync -source:contentPath="D:\a\CIDemo\CIDemo\bin\Debug\net5.0\publish\" -dest:contentPath="C:\inetpub\CIDemoUsingGithubActions\",computerName="${{ env.IIS_SERVER_COMPUTER_NAME }}/msdeploy.axd?site=${{ env.IIS_WEBSITE_NAME }}",username="${{ env.IIS_SERVER_USERNAME }}",password="${{ env.IIS_SERVER_PASSWORD }}",authtype="Basic"'
 
