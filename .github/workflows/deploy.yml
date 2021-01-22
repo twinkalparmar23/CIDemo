@@ -1,0 +1,49 @@
+name: DEPLOY .NET
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      IIS_SERVER_COMPUTER_NAME: ${{ secrets.IIS_SERVER_COMPUTER_NAME }}
+      IIS_WEBSITE_NAME: ${{ secrets.IIS_WEBSITE_NAME }}
+      IIS_SERVER_USERNAME: ${{ secrets.IIS_SERVER_USERNAME }}
+      IIS_SERVER_PASSWORD: ${{ secrets.IIS_SERVER_PASSWORD }}
+      WEBSITE_CONTENT_PATH: ${{ secrets.WEBSITE_CONTENT_PATH }}
+
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: Publish
+      run: dotnet publish --no-restore
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v2
+      with: 
+        name: BuildArtifact
+        path:  /home/runner/work/CIDemo/CIDemo/bin/debug/net5.0/publish/
+    
+    - name: print data
+      run: |
+          ls /home/runner/work/CIDemo/CIDemo/bin/debug/net5.0/publish/
+
+
+    - name: GitHub Actions WebDeploy
+      uses: cschleiden/webdeploy-action@v1
+      with:
+        webSiteName: 'CIDemoUsingGithubActions'
+        package: ${{ format('/home/runner/work/CIDemo/CIDemo/bin/debug/net5.0/publish/', runner.workspace) }}
