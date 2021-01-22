@@ -35,15 +35,15 @@ jobs:
       uses: actions/upload-artifact@v2
       with: 
         name: BuildArtifact
-        path:  /home/runner/work/CIDemo/CIDemo/bin/debug/net5.0/publish/
+        path:  /home/runner/work/CIDemo/CIDemo/bin/Debug/net5.0/publish/ 
     
     - name: print data
       run: |
-          ls /home/runner/work/CIDemo/CIDemo/bin/debug/net5.0/publish/
+          ls /home/runner/work/CIDemo/CIDemo/bin/Debug/net5.0/publish/
 
 
     - name: GitHub Actions WebDeploy
       uses: cschleiden/webdeploy-action@v1
       with:
         webSiteName: 'CIDemoUsingGithubActions'
-        package: ${{ format('/home/runner/work/CIDemo/CIDemo/bin/debug/net5.0/publish/', runner.workspace) }}
+        package: ${{ format('//home/runner/work/CIDemo/CIDemo/bin/Debug/net5.0/publish/', runner.workspace) }}
