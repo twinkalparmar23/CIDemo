@@ -44,4 +44,4 @@ jobs:
 
     - name: Deploy Application
       shell: cmd
-      run: '"C:/Program Files (x86)/IIS/Microsoft Web Deploy V3/msdeploy.exe" -verb:sync -allowUntrusted -source:contentPath="D:\a\CIDemo\CIDemo\bin\Debug\net5.0\publish\" -dest:contentPath="C:\inetpub\CIDemoUsingGithubActions\",computerName="http://3.80.127.29:8172/msdeploy.axd?site=CIDemoUsingGithubActions",username="EC2AMAZ-MRJOPG0\Administrator",password="${{ env.IIS_SERVER_PASSWORD }}",authtype="Basic"'
+      run: '"C:/Program Files (x86)/IIS/Microsoft Web Deploy V3/msdeploy.exe" -verb:sync -allowUntrusted -source:contentPath="D:\a\CIDemo\CIDemo\bin\Debug\net5.0\publish\" -dest:contentPath="C:\inetpub\CIDemoUsingGithubActions\",computerName="https://3.80.127.29:8172/msdeploy.axd?site=CIDemoUsingGithubActions",username="EC2AMAZ-MRJOPG0\Administrator",password="${{ env.IIS_SERVER_PASSWORD }}",authtype="Basic"'
